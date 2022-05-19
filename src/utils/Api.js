@@ -1,17 +1,41 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:3001";
+export default axios.create({
+  baseURL: 'http://localhost:3001/api/v1/',
+});
 
-export const login = (email, password) => {
-  return axios.post("/login", { email, password,})
-  .then((response) => {
-    if (response.data.accessToken) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-      localStorage.setItem("token", response.token);
+export const fetchReducers = {
+  fetching: (draft) => {
+    if (draft.status === 'void') {
+      draft.status = 'pending';
+      return;
     }
-    return response.data;
-  })
-  .catch((error) => {
-    console.log(error)
-  });
+    if (draft.status === 'rejected') {
+      draft.error = null;
+      draft.status = 'pending';
+      return;
+    }
+    if (draft.status === 'resolved') {
+      draft.status = 'updating';
+      return;
+    }
+    return;
+  },
+  resolved: (draft, action) => {
+    if (draft.status === 'pending' || draft.status === 'updating') {
+      draft.data = action.payload;
+      draft.status = 'resolved';
+      return;
+    }
+    return;
+  },
+  rejected: (draft, action) => {
+    if (draft.status === 'pending' || draft.status === 'updating') {
+      draft.status = 'rejected';
+      draft.error = JSON.stringify(action.payload);
+      draft.data = null;
+      return;
+    }
+    return;
+  },
 };
