@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import Header from "./components/Header";
 import Home from './pages/Home';
 import Signin from './components/Signin';
+import Profile from './components/Profile';
 import Footer from './components/Footer';
 import { store } from "./utils/store";
 import './index.css';
@@ -23,7 +24,7 @@ root.render(
           <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/login" element={<Signin />}/>
-            <Route path="/profile" />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <Footer />
       </BrowserRouter>
