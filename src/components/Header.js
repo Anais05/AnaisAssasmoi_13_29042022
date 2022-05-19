@@ -1,13 +1,17 @@
 import React from "react"
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logOut } from '../features/LoginReducer';
 import logo from '../assets/argentBankLogo.png';
 
 export default function Header() {
-  const firstName = useSelector(state => state.user?.data?.firstName || '');
-  const isLoggedIn = useSelector(state => !!state.login?.data?.token);
+  const dispatch = useDispatch();
+  const firstName = useSelector(state => state.user?.data?.firstName);
+  const isLoggedIn = useSelector(state => state.login?.data);
 
-  console.log(isLoggedIn)
+  const signOut = () => {
+    dispatch(logOut());
+  };
 
   console.log(firstName)
 
@@ -26,7 +30,7 @@ export default function Header() {
         <div>
           <i className="fa fa-user-circle"></i>
           <Link className="main-nav-item" to='/profile'>{ firstName }</Link>
-          <Link data-testid='logout-btn' className="main-nav-item" to='/'>Sign Out</Link>
+          <Link data-testid='logout-btn' className="main-nav-item" to='/' onClick={signOut}>Sign Out</Link>
         </div>
         ) : (
         <div>

@@ -1,5 +1,7 @@
+import axios from "axios";
 import { createSlice } from "@reduxjs/toolkit"
-import fetcher, { fetchReducers } from '../utils/Api';
+import { fetchReducer } from '../utils/fetchReducer';
+import { baseURL } from "../utils/baseUrl";
 
 const initialState = {
   status: 'void',
@@ -7,7 +9,7 @@ const initialState = {
   error: null,
 }
 
-export function logIn(formData) {
+export function logIn(email, password, remember) {
   return async (dispatch, getState) => {
     const status = getState().login.status;
     if (status === 'pending' || status === 'updating') {
@@ -15,33 +17,50 @@ export function logIn(formData) {
     }
     dispatch(actions.fetching());
     try {
-      const response = await fetcher.post('/user/login', formData);
-      const data = response.data.body;
-      localStorage.setItem('token', data.token);
+      const response = await axios.post(baseURL + 'user/login', {
+        email: email,
+        password: password,
+      })
+      const data = response.data?.body;
+      if (remember) {
+        localStorage.setItem('token', data.token)
+        console.log(window.localStorage.getItem('token'))
+      }
       dispatch(actions.resolved(data));
-    } catch (error) {
+    } catch(error) {
       dispatch(actions.rejected(error));
     }
   };
+}
+
+export function logOut() {
+  return async (dispatch) => {
+    dispatch(actions.logout());
+  }
+}
+
+export function setToken(token) {
+  return async (dispatch) => {
+    dispatch(actions.setToken(token));
+  }
 }
 
 const { actions, reducer } = createSlice({
   name: 'login',
   initialState,
   reducers: {
-    fetchReducers,
+    ...fetchReducer,
+
     setToken: (state, action) => {
       state.data = action.payload;
       return state;
     },
 
-    removeToken: () => {
-      localStorage.removeItem('token');
+    logout: () => {
       return initialState;
     },
   }
 })
 
-export const {setToken, removeToken } = actions;
 export default reducer;
 

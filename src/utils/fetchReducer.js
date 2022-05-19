@@ -1,10 +1,4 @@
-import axios from "axios";
-
-export default axios.create({
-  baseURL: 'http://localhost:3001/api/v1/',
-});
-
-export const fetchReducers = {
+export const fetchReducer = {
   fetching: (draft) => {
     if (draft.status === 'void') {
       draft.status = 'pending';
@@ -32,7 +26,7 @@ export const fetchReducers = {
   rejected: (draft, action) => {
     if (draft.status === 'pending' || draft.status === 'updating') {
       draft.status = 'rejected';
-      draft.error = JSON.stringify(action.payload);
+      draft.error = action.payload;
       draft.data = null;
       return;
     }
