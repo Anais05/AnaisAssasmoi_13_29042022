@@ -9,7 +9,7 @@ const initialState = {
   error: null,
 }
 
-export function logIn(email, password, remember) {
+export function logIn(email, password) {
   return async (dispatch, getState) => {
     const status = getState().login.status;
     if (status === 'pending' || status === 'updating') {
@@ -22,9 +22,7 @@ export function logIn(email, password, remember) {
         password: password,
       })
       const data = response.data?.body;
-      if (remember) {
-        localStorage.setItem('token', data.token)
-      }
+      localStorage.setItem('token', data.token)
       dispatch(actions.resolved(data));
     } catch(error) {
       dispatch(actions.rejected(error));
@@ -35,6 +33,7 @@ export function logIn(email, password, remember) {
 export function logOut() {
   return async (dispatch) => {
     dispatch(actions.logout());
+    localStorage.removeItem('token');
   }
 }
 

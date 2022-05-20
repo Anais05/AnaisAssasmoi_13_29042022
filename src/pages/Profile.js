@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { GetOrUpdateUser } from '../features/UserReducer';
 import { accountData } from '../data/accountData';
 
@@ -23,7 +24,7 @@ export default function Profile() {
   };
 
   if (user?.status === 'rejected') {
-    return <span>Un problème s'est produit, veuillez réessayer</span>;
+    return <Navigate to='/login' />;
   }
 
   if (user?.status === 'pending' || user?.status === 'void') {
@@ -73,8 +74,8 @@ export default function Profile() {
 
       <h2 className="sr-only">Accounts</h2>
       {accountData.map((account, index) => (
-      <section className="account">
-        <div className="account-content-wrapper" key={index}>
+      <section className="account" key={index}>
+        <div className="account-content-wrapper">
           <h3 className="account-title">{account.title}</h3>
           <p className="account-amount">{`$${account.amount}`}</p>
           <p className="account-amount-description">{account.description}</p>
