@@ -4,14 +4,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from "react-redux";
 import Header from "./components/Header";
 import Home from './pages/Home';
-import Signin from './components/Signin';
-import Profile from './components/Profile';
+import Signin from './pages/Signin';
+import Profile from './pages/Profile';
 import Footer from './components/Footer';
 import { store } from "./utils/store";
 import './index.css';
-
-
-console.log(store)
 
 const container = document.getElementById('root');
 const root = createRoot(container);

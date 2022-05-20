@@ -2,7 +2,7 @@ import chat from "../assets/icon-chat.png";
 import money from "../assets/icon-money.png";
 import security from "../assets/icon-security.png";
 
-const featuresData = [
+export const featuresData = [
   {
     img: chat,
     alt: "Chat icon",
@@ -22,5 +22,3 @@ const featuresData = [
     text: "We use top of the line encryption to make sure your data and money is always safe.",
   },
 ]
-
-export default featuresData;

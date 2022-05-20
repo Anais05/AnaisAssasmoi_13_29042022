@@ -24,7 +24,6 @@ export function logIn(email, password, remember) {
       const data = response.data?.body;
       if (remember) {
         localStorage.setItem('token', data.token)
-        console.log(window.localStorage.getItem('token'))
       }
       dispatch(actions.resolved(data));
     } catch(error) {
