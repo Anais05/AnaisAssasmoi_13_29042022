@@ -12,6 +12,9 @@ const initialState = {
 export function GetOrUpdateUser(first, last) {
   return async (dispatch, getState) => {
     const status = getState().user.status;
+    const firstname = getState().user.data?.firstName;
+    const lastname = getState().user.data?.lastName;
+
     if (status === 'pending' || status === 'updating') {
       return;
     }
@@ -22,6 +25,13 @@ export function GetOrUpdateUser(first, last) {
       };
       let response;
       if (first || last) {
+        if (first === '') {
+          first = firstname
+        }
+        if (last === '') {
+          last = lastname
+        }
+
         response = await axios.put(baseURL + 'user/profile', {
           firstName: first,
           lastName: last,

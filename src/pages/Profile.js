@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { GetOrUpdateUser } from '../features/UserReducer';
-import { accountData } from '../data/accountData';
+import Accounts from '../components/Accounts';
 
 export default function Profile() {
   const dispatch = useDispatch();
   const [editionMode, setEditionMode ] = useState(false);
   const [newFirst, setNewFirst] = useState('');
   const [newLast, setNewlast] = useState('');
+  const isLoggedIn = useSelector(state => state.login?.data);
   const user = useSelector(state => state.user);
   const firstname = user?.data?.firstName;
   const lastname = user?.data?.lastName;
@@ -23,7 +24,7 @@ export default function Profile() {
     dispatch(GetOrUpdateUser(newFirst, newLast));
   };
 
-  if (user?.status === 'rejected') {
+  if (user?.status === 'rejected' || !isLoggedIn) {
     return <Navigate to='/login' />;
   }
 
@@ -72,19 +73,7 @@ export default function Profile() {
         }
       </div>
 
-      <h2 className="sr-only">Accounts</h2>
-      {accountData.map((account, index) => (
-      <section className="account" key={index}>
-        <div className="account-content-wrapper">
-          <h3 className="account-title">{account.title}</h3>
-          <p className="account-amount">{`$${account.amount}`}</p>
-          <p className="account-amount-description">{account.description}</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
-      ))}
+      <Accounts />
     </main>
   );
 }
