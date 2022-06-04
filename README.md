@@ -24,7 +24,7 @@
 
 ### 2 Application
 
-- Fork this repository https://github.com/Anais05/AnaisAssamoi_12_13012022.git
+- Fork this repository https://github.com/Anais05/AnaisAssasmoi_13_29042022
 - Clone it on your computer.
 - The `npm install` command will allow you to install the dependencies.
 - The `npm start` command will allow you to run the app in the development mode.
